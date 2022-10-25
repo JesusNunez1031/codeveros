@@ -28,5 +28,14 @@ node {
       }
     }
     */
+    stage('deliver') {
+      if(env.BRANCH_NAME == 'master') {
+        docker.withRegistry('', 'dockerhub') {
+          def myImage = docker.build("jnunez31/ui:${env.BUILD_ID}")
+          myImage.push()
+          myImage.push('latest')
+        }
+      }
+    }
   }
 }
